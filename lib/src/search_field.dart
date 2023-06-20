@@ -4,8 +4,10 @@ import 'package:navigation_search_bar/src/constants.dart';
 import 'package:navigation_search_bar/src/properties/search_field_props.dart';
 import 'package:navigation_search_bar/src/view_model.dart';
 
-class SearchField extends StatelessWidget {
-  const SearchField(
+final _cancelButtonKey = GlobalKey();
+
+class SearchField extends StatefulWidget {
+  SearchField(
       {Key? key,
       required this.appBarCollapsed,
       required this.viewModel,
@@ -25,14 +27,30 @@ class SearchField extends StatelessWidget {
   final ScrollController scrollController;
 
   @override
+  State<SearchField> createState() => _SearchFieldState();
+}
+
+class _SearchFieldState extends State<SearchField> {
+  double cancelButtonWidth = 0;
+  double focusedSearchWidth = 0;
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      focusedSearchWidth = _getSearchWidth(context);
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final focusedSearchWidth = MediaQuery.of(context).size.width * 0.7525;
+
     return ValueListenableBuilder(
-      valueListenable: viewModel.searchHeight,
+      valueListenable: widget.viewModel.searchHeight,
       builder: (BuildContext context, double value, Widget? child) {
         return TweenAnimationBuilder(
           tween: Tween<double>(begin: 0, end: value),
-          duration: Duration(milliseconds: viewModel.shouldAnimateSmoothly ? 200 : 10),
+          duration: Duration(milliseconds: widget.viewModel.shouldAnimateSmoothly ? 200 : 10),
           builder: (context, double tweenValue, child) {
             late double opacity;
             const threshold = kSearchHeight * 0.8;
@@ -46,20 +64,20 @@ class SearchField extends StatelessWidget {
             }
             return AnimatedContainer(
               decoration: BoxDecoration(
-                  color: appBarCollapsed ? backgroundColor : Scaffold.of(context).widget.backgroundColor,
-                  border: appBarCollapsed
+                  color: widget.appBarCollapsed ? widget.backgroundColor : Scaffold.of(context).widget.backgroundColor,
+                  border: widget.appBarCollapsed
                       ? Border(
                           bottom: BorderSide(
-                            color: borderColor,
+                            color: widget.borderColor,
                             width: 0.33,
                           ),
                         )
                       : invisibleBorder),
               padding: EdgeInsets.only(
                   bottom: 10,
-                  left: 15.0,
-                  top: appBarCollapsed ? (MediaQuery.of(context).padding.top + 12) : 8,
-                  right: 15),
+                  left: widget.properties.paddingLeft,
+                  top: widget.appBarCollapsed ? (MediaQuery.of(context).padding.top + 12) : 8,
+                  right: widget.properties.paddingRight),
               duration: kAppBarCollapseDuration,
               child: SizedBox(
                 height: tweenValue,
@@ -68,46 +86,48 @@ class SearchField extends StatelessWidget {
                   children: [
                     AnimatedContainer(
                       duration: kAppBarCollapseDuration,
-                      width: searchCancelOpen ? focusedSearchWidth : MediaQuery.of(context).size.width,
+                      width: widget.searchCancelOpen ? focusedSearchWidth : MediaQuery.of(context).size.width,
                       child: Focus(
                         onFocusChange: (value) {
-                          viewModel.onFocusChange(value, SearchFieldProperties.controller.text);
-                          viewModel.onSearchFocusChange(value, SearchFieldProperties.controller.text);
+                          widget.viewModel.onFocusChange(value, SearchFieldProperties.controller.text);
+                          widget.viewModel.onSearchFocusChange(value, SearchFieldProperties.controller.text);
                         },
                         child: CupertinoSearchTextField(
                           onSuffixTap: () {
                             SearchFieldProperties.controller.text = "";
                             SearchFieldProperties.focusNode.requestFocus();
-                            properties.onSuffixTap?.call();
+                            widget.properties.onSuffixTap?.call();
                           },
-                          suffixIcon: properties.suffixIcon,
+                          suffixIcon: widget.properties.suffixIcon,
                           focusNode: SearchFieldProperties.focusNode,
-                          style: properties.style,
+                          style: widget.properties.style,
                           controller: SearchFieldProperties.controller,
-                          onChanged: properties.onChanged,
-                          backgroundColor: properties.backgroundColor,
-                          onSubmitted: properties.onSubmitted,
-                          placeholder: properties.placeholder,
-                          placeholderStyle: (properties.placeholderStyle ?? const TextStyle(color: CupertinoColors.systemGrey).copyWith(color: (properties.placeholderStyle?.color ?? CupertinoColors.systemGrey).withOpacity(opacity))),
-                          decoration: properties.decoration,
-                          borderRadius: properties.borderRadius,
-                          keyboardType: properties.keyboardType,
-                          padding: properties.padding,
-                          itemSize: properties.itemSize,
-                          itemColor: properties.itemColor,
+                          onChanged: widget.properties.onChanged,
+                          backgroundColor: widget.properties.backgroundColor,
+                          onSubmitted: widget.properties.onSubmitted,
+                          placeholder: widget.properties.placeholder,
+                          placeholderStyle: (widget.properties.placeholderStyle ??
+                              const TextStyle(color: CupertinoColors.systemGrey).copyWith(
+                                  color: (widget.properties.placeholderStyle?.color ?? CupertinoColors.systemGrey)
+                                      .withOpacity(opacity))),
+                          decoration: widget.properties.decoration,
+                          borderRadius: widget.properties.borderRadius,
+                          keyboardType: widget.properties.keyboardType,
+                          padding: widget.properties.padding,
+                          itemSize: widget.properties.itemSize,
+                          itemColor: widget.properties.itemColor,
                           prefixIcon: Builder(builder: (context) {
-
                             return Opacity(
                               opacity: opacity,
-                              child: properties.prefixIcon,
+                              child: widget.properties.prefixIcon,
                             );
                           }),
-                          prefixInsets: properties.prefixInsets,
-                          suffixInsets: properties.suffixInsets,
-                          autofocus: properties.autofocus,
-                          autocorrect: properties.autocorrect,
-                          enabled: properties.enabled,
-                          onTap: properties.onTap,
+                          prefixInsets: widget.properties.prefixInsets,
+                          suffixInsets: widget.properties.suffixInsets,
+                          autofocus: widget.properties.autofocus,
+                          autocorrect: widget.properties.autocorrect,
+                          enabled: widget.properties.enabled,
+                          onTap: widget.properties.onTap,
                         ),
                       ),
                     ),
@@ -116,21 +136,22 @@ class SearchField extends StatelessWidget {
                       child: AnimatedOpacity(
                         curve: Curves.easeIn,
                         duration: kAppBarCollapseDuration,
-                        opacity: searchCancelOpen ? 1 : 0,
+                        opacity: widget.searchCancelOpen ? 1 : 0,
                         child: AnimatedSlide(
-                          offset: Offset(searchCancelOpen ? 0 : 2, 0),
+                          offset: Offset(widget.searchCancelOpen ? 0 : 2, 0),
                           duration: kAppBarCollapseDuration,
                           child: GestureDetector(
                             onTap: () async {
-                              properties.onCancelTap?.call();
-                              await viewModel.cancelSearch(
-                                  SearchFieldProperties.controller, scrollController, SearchFieldProperties.focusNode);
-                              viewModel.changeAppBarCollapseState(false, SearchFieldProperties.controller.text);
-                              viewModel.changeCancelSearch(false);
+                              widget.properties.onCancelTap?.call();
+                              await widget.viewModel.cancelSearch(
+                                  SearchFieldProperties.controller, widget.scrollController, SearchFieldProperties.focusNode);
+                              widget.viewModel.changeAppBarCollapseState(false, SearchFieldProperties.controller.text);
+                              widget.viewModel.changeCancelSearch(false);
                             },
-                            child: const Text(
-                              "Cancel",
-                              style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w400, fontSize: 17),
+                            child: Text(
+                              key: _cancelButtonKey,
+                              widget.properties.cancelButtonName,
+                              style: widget.properties.cancelButtonStyle,
                             ),
                           ),
                         ),
@@ -144,5 +165,16 @@ class SearchField extends StatelessWidget {
         );
       },
     );
+  }
+
+  double _getSearchWidth(BuildContext context) {
+    if (_cancelButtonKey.currentContext != null) {
+      final widget = _cancelButtonKey.currentContext!.findRenderObject();
+      cancelButtonWidth = widget!.paintBounds.size.width;
+    }
+    final toSubstract = (cancelButtonWidth + widget.properties.paddingLeft + 2 * widget.properties.paddingRight);
+    final focusedSearchWidth =
+    cancelButtonWidth == 0 ? MediaQuery.of(context).size.width * 0.7525 : MediaQuery.of(context).size.width - toSubstract;
+    return focusedSearchWidth;
   }
 }
