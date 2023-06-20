@@ -1,39 +1,49 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# iOS Search AppBar
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages).
-
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages).
--->
-
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
-
-## Features
-
-TODO: List what your package can do. Maybe include images, gifs, or videos.
-
-## Getting started
-
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+The **iOS Search AppBar** package is a Flutter library that provides a collapsible app bar and a beautiful search bar animation, giving your Flutter app an iOS-style look and feel. It is fully customizable and compatible with both iOS and Android platforms.
 
 ## Usage
+Add the `ios_search_appbar` package to your `pubspec.yaml` file:
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+```yaml
+dependencies:
+  ios_search_appbar: ^1.0.0
 
-```dart
-const like = 'sample';
 ```
+Import the package in your Dart code:
+```dart
+import 'package:ios_search_appbar/cupertino_search_appbar.dart';
+```
+Use `CupertinoSearchAppBar` by passing your content to the `slivers` parameter:
+```dart
+CupertinoSearchAppBar(
+  slivers: [
+    // Your slivers go here
+  ],
+)
+```
+Example:
+```dart
+class Example extends StatelessWidget {
+  const Example({Key? key}) : super(key: key);
 
-## Additional information
-
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+  @override
+  Widget build(BuildContext context) {
+    return CupertinoSearchAppBar(
+      //to customize search bar use:
+      searchFieldProperties: SearchFieldProperties(),
+      //to customize app bar use:
+      appBarProperties: AppBarProperties(),
+      slivers: [
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (context, index) {
+              return CupertinoListTile(title: Text("Title with index of $index"));
+            },
+            childCount: 15,
+          ),
+        ),
+      ],
+    );
+  }
+}
