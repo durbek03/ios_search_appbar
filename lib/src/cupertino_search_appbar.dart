@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:navigation_search_bar/src/constants.dart';
-import 'package:navigation_search_bar/src/navigation_app_bar.dart';
+import 'package:navigation_search_bar/src/cupertino_appbar.dart';
 import 'package:navigation_search_bar/src/properties/app_bar_props.dart';
 import 'package:navigation_search_bar/src/properties/search_field_props.dart';
 import 'package:navigation_search_bar/src/search_field.dart';
@@ -10,8 +10,8 @@ import 'package:navigation_search_bar/src/widgets/extra_scroll_sliver.dart';
 import 'package:navigation_search_bar/src/widgets/sliver_pinned_header.dart';
 import 'package:navigation_search_bar/src/widgets/status_bar.dart';
 
-class NavigationSearchBar extends StatefulWidget {
-  NavigationSearchBar({
+class CupertinoSearchAppBar extends StatefulWidget {
+  CupertinoSearchAppBar({
     Key? key,
     required this.slivers,
     this.title = "",
@@ -41,17 +41,17 @@ class NavigationSearchBar extends StatefulWidget {
   late final AppBarProperties appBarProperties;
 
   @override
-  State<NavigationSearchBar> createState() => _NavigationSearchBarState(scrollController: scrollController);
+  State<CupertinoSearchAppBar> createState() => _CupertinoSearchAppBarState(scrollController: scrollController);
 }
 
-class _NavigationSearchBarState extends State<NavigationSearchBar> {
+class _CupertinoSearchAppBarState extends State<CupertinoSearchAppBar> {
   /// [ViewModel] holds all necessary fields for driving core functionalities of this package (appBarCollapse, searchTextField animation...)
   late final ViewModel _viewModel = ViewModel();
   String? listHashCodeBefore;
   late final ScrollController scrollController;
   double remainingScreenHeight = 0;
 
-  _NavigationSearchBarState({ScrollController? scrollController}) {
+  _CupertinoSearchAppBarState({ScrollController? scrollController}) {
     this.scrollController = scrollController ?? ScrollController(initialScrollOffset: kSearchHeight);
   }
 
@@ -61,6 +61,13 @@ class _NavigationSearchBarState extends State<NavigationSearchBar> {
     SearchFieldProperties.focusNode.dispose();
     SearchFieldProperties.controller.dispose();
     super.dispose();
+  }
+
+
+  @override
+  void didUpdateWidget(CupertinoSearchAppBar oldWidget) {
+    _viewModel.offsetChange(scrollController.offset);
+    return super.didUpdateWidget(oldWidget);
   }
 
   @override

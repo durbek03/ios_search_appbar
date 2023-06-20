@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/rendering.dart';
-import 'package:navigation_search_bar/navigation_search_bar.dart';
+import 'package:navigation_search_bar/ios_search_appbar.dart';
 import 'package:navigation_search_bar/src/constants.dart';
 
 class ViewModel {
