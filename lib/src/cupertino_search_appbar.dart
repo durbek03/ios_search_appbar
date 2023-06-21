@@ -21,6 +21,10 @@ class CupertinoSearchAppBar extends StatefulWidget {
     SearchFieldProperties? searchFieldProperties,
     AppBarProperties? appBarProperties,
   }) : super(key: key) {
+
+    /// if you are passing ScrollController you must set initialScrollOffset to 36.0
+    assert(scrollController?.initialScrollOffset == 36.0 || scrollController?.initialScrollOffset == null);
+
     this.searchFieldProperties = searchFieldProperties ?? SearchFieldProperties();
     this.appBarProperties = appBarProperties ?? AppBarProperties();
   }
