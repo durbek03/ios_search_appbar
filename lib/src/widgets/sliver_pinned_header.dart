@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:navigation_search_bar/src/widgets/render_sliver_pinned_header.dart';
+import 'package:ios_search_appbar/src/widgets/render_sliver_pinned_header.dart';
 
 class SliverPinnedHeader extends SingleChildRenderObjectWidget {
   const SliverPinnedHeader({

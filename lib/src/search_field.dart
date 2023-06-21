@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:navigation_search_bar/src/constants.dart';
-import 'package:navigation_search_bar/src/properties/search_field_props.dart';
-import 'package:navigation_search_bar/src/view_model.dart';
+import 'package:ios_search_appbar/src/constants.dart';
+import 'package:ios_search_appbar/src/properties/search_field_props.dart';
+import 'package:ios_search_appbar/src/view_model.dart';
 
 final _cancelButtonKey = GlobalKey();
 

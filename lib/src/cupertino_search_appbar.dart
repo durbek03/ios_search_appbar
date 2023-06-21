@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:navigation_search_bar/src/constants.dart';
-import 'package:navigation_search_bar/src/cupertino_appbar.dart';
-import 'package:navigation_search_bar/src/properties/app_bar_props.dart';
-import 'package:navigation_search_bar/src/properties/search_field_props.dart';
-import 'package:navigation_search_bar/src/search_field.dart';
-import 'package:navigation_search_bar/src/view_model.dart';
-import 'package:navigation_search_bar/src/widgets/extra_scroll_sliver.dart';
-import 'package:navigation_search_bar/src/widgets/sliver_pinned_header.dart';
-import 'package:navigation_search_bar/src/widgets/status_bar.dart';
+import 'package:ios_search_appbar/src/constants.dart';
+import 'package:ios_search_appbar/src/cupertino_appbar.dart';
+import 'package:ios_search_appbar/src/properties/app_bar_props.dart';
+import 'package:ios_search_appbar/src/properties/search_field_props.dart';
+import 'package:ios_search_appbar/src/search_field.dart';
+import 'package:ios_search_appbar/src/view_model.dart';
+import 'package:ios_search_appbar/src/widgets/extra_scroll_sliver.dart';
+import 'package:ios_search_appbar/src/widgets/sliver_pinned_header.dart';
+import 'package:ios_search_appbar/src/widgets/status_bar.dart';
 
 class CupertinoSearchAppBar extends StatefulWidget {
   CupertinoSearchAppBar({

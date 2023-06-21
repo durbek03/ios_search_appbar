@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/rendering.dart';
-import 'package:navigation_search_bar/ios_search_appbar.dart';
-import 'package:navigation_search_bar/src/constants.dart';
+import 'package:ios_search_appbar/src/constants.dart';
 
 class ViewModel {
   /// Threshold where large title should disappear
