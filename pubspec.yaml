@@ -1,10 +1,10 @@
-name: navigation_search_bar
-description: ios native navigation search bar
-version: 0.0.1
-homepage:
+name: ios_search_appbar
+description: iOS-style collapsible app bar with beautifully animated search bar
+version: 1.0.0
+homepage: "homepage"
 
 environment:
-  sdk: '>=2.19.6 <3.0.0'
+  sdk: '>=2.19.6 <4.0.0'
   flutter: ">=1.17.0"
 
 dependencies:
