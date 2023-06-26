@@ -30,9 +30,9 @@ class Example extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoSearchAppBar(
-      //to customize search bar use:
+      //to customize search bar, use:
       searchFieldProperties: SearchFieldProperties(),
-      //to customize app bar use:
+      //to customize app bar, use:
       appBarProperties: AppBarProperties(),
       slivers: [
         SliverList(
