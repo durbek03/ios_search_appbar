@@ -31,20 +31,21 @@ class SearchField extends StatefulWidget {
 }
 
 class _SearchFieldState extends State<SearchField> {
-  double cancelButtonWidth = 0;
-  double focusedSearchWidth = 0;
+  double? cancelButtonWidth = null;
 
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      focusedSearchWidth = _getSearchWidth(context);
+      if (_cancelButtonKey.currentContext != null) {
+        cancelButtonWidth = _cancelButtonKey.currentContext?.findRenderObject()?.paintBounds.size.width;
+      }
     });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-
+    print("qwe media width ${MediaQuery.of(context).size.width}");
     return ValueListenableBuilder(
       valueListenable: widget.viewModel.searchHeight,
       builder: (BuildContext context, double value, Widget? child) {
@@ -86,7 +87,9 @@ class _SearchFieldState extends State<SearchField> {
                   children: [
                     AnimatedContainer(
                       duration: kAppBarCollapseDuration,
-                      width: widget.searchCancelOpen ? focusedSearchWidth : MediaQuery.of(context).size.width,
+                      /// MediaQuery.of(context).size.width * 0.725 is approximate width of searchField if the word of "Cancel" button is Cancel;
+                      /// if for some reason cancelButtonWidth is not calculated correctly I will use MediaQuery.of(context).size.width * 0.725 as default width
+                      width: widget.searchCancelOpen ? (cancelButtonWidth == null ? MediaQuery.of(context).size.width * 0.725 : MediaQuery.of(context).size.width - (cancelButtonWidth! + widget.properties.paddingLeft + 2 * widget.properties.paddingRight)) : MediaQuery.of(context).size.width,
                       child: Focus(
                         onFocusChange: (value) {
                           widget.viewModel.onFocusChange(value, SearchFieldProperties.controller.text);
@@ -165,16 +168,5 @@ class _SearchFieldState extends State<SearchField> {
         );
       },
     );
-  }
-
-  double _getSearchWidth(BuildContext context) {
-    if (_cancelButtonKey.currentContext != null) {
-      final widget = _cancelButtonKey.currentContext!.findRenderObject();
-      cancelButtonWidth = widget!.paintBounds.size.width;
-    }
-    final toSubstract = (cancelButtonWidth + widget.properties.paddingLeft + 2 * widget.properties.paddingRight);
-    final focusedSearchWidth =
-    cancelButtonWidth == 0 ? MediaQuery.of(context).size.width * 0.7525 : MediaQuery.of(context).size.width - toSubstract;
-    return focusedSearchWidth;
   }
 }
