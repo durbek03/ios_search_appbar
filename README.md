@@ -2,6 +2,8 @@
 
 The **iOS Search AppBar** package is a Flutter library that provides a collapsible app bar and a beautiful search bar animation, giving your Flutter app an iOS-style look and feel. It is fully customizable and compatible with both iOS and Android platforms.
 
+https://github.com/durbek03/ios_search_appbar/assets/76834170/fb920e24-002c-494d-bd2d-d806aed28277
+
 ## Usage
 Add the `ios_search_appbar` package to your `pubspec.yaml` file:
 
@@ -47,5 +49,3 @@ class Example extends StatelessWidget {
     );
   }
 }
-
-![DEMO](https://github.com/durbek03/ios_search_appbar/blob/master/lib/assets/demo_video.MP4)
