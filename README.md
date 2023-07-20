@@ -47,3 +47,5 @@ class Example extends StatelessWidget {
     );
   }
 }
+
+![DEMO](https://github.com/durbek03/ios_search_appbar/blob/master/lib/assets/demo_video.MP4)
