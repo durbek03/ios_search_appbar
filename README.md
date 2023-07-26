@@ -9,7 +9,7 @@ Add the `ios_search_appbar` package to your `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  ios_search_appbar: ^1.0.2
+  ios_search_appbar: ^1.0.3
 
 ```
 Import the package in your Dart code:
