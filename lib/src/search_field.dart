@@ -45,7 +45,6 @@ class _SearchFieldState extends State<SearchField> {
 
   @override
   Widget build(BuildContext context) {
-    print("qwe media width ${MediaQuery.of(context).size.width}");
     return ValueListenableBuilder(
       valueListenable: widget.viewModel.searchHeight,
       builder: (BuildContext context, double value, Widget? child) {
@@ -98,7 +97,7 @@ class _SearchFieldState extends State<SearchField> {
                         child: CupertinoSearchTextField(
                           onSuffixTap: () {
                             SearchFieldProperties.controller.text = "";
-                            SearchFieldProperties.focusNode.requestFocus();
+                            SearchFieldProperties.focusNode!.requestFocus();
                             widget.properties.onSuffixTap?.call();
                           },
                           suffixIcon: widget.properties.suffixIcon,
@@ -147,7 +146,7 @@ class _SearchFieldState extends State<SearchField> {
                             onTap: () async {
                               widget.properties.onCancelTap?.call();
                               await widget.viewModel.cancelSearch(
-                                  SearchFieldProperties.controller, widget.scrollController, SearchFieldProperties.focusNode);
+                                  SearchFieldProperties.controller, widget.scrollController, SearchFieldProperties.focusNode!);
                               widget.viewModel.changeAppBarCollapseState(false, SearchFieldProperties.controller.text);
                               widget.viewModel.changeCancelSearch(false);
                             },

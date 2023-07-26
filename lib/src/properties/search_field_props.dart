@@ -36,11 +36,13 @@ class SearchFieldProperties {
     }
     if (focusNode != null) {
       SearchFieldProperties.focusNode = focusNode;
+    } else {
+      SearchFieldProperties.focusNode = FocusNode();
     }
   }
 
   static TextEditingController controller = TextEditingController();
-  static FocusNode focusNode = FocusNode();
+  static FocusNode? focusNode;
 
   final ValueChanged<String>? onChanged;
   final ValueChanged<String>? onSubmitted;

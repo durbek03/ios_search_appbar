@@ -61,10 +61,11 @@ class _CupertinoSearchAppBarState extends State<CupertinoSearchAppBar> {
 
   @override
   void dispose() {
-    scrollController.dispose();
-    SearchFieldProperties.focusNode.dispose();
-    SearchFieldProperties.controller.dispose();
     super.dispose();
+    scrollController.dispose();
+    SearchFieldProperties.focusNode?.dispose();
+    SearchFieldProperties.focusNode = null;
+    SearchFieldProperties.controller.dispose();
   }
 
 
@@ -78,8 +79,8 @@ class _CupertinoSearchAppBarState extends State<CupertinoSearchAppBar> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        if (SearchFieldProperties.focusNode.hasFocus) {
-          SearchFieldProperties.focusNode.unfocus();
+        if (SearchFieldProperties.focusNode!.hasFocus) {
+          SearchFieldProperties.focusNode!.unfocus();
         }
       },
       child: NotificationListener(
