@@ -41,7 +41,7 @@ class SearchFieldProperties {
     }
   }
 
-  static TextEditingController controller = TextEditingController();
+  static TextEditingController? controller;
   static FocusNode? focusNode;
 
   final ValueChanged<String>? onChanged;
