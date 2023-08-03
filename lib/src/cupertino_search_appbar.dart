@@ -64,8 +64,9 @@ class _CupertinoSearchAppBarState extends State<CupertinoSearchAppBar> {
     super.dispose();
     scrollController.dispose();
     SearchFieldProperties.focusNode?.dispose();
+    SearchFieldProperties.controller?.dispose();
     SearchFieldProperties.focusNode = null;
-    SearchFieldProperties.controller.dispose();
+    SearchFieldProperties.controller = null;
   }
 
 
@@ -187,7 +188,7 @@ class _CupertinoSearchAppBarState extends State<CupertinoSearchAppBar> {
             ),
 
             /// making SystemStatusBar transparent
-            const SystemStatusBar()
+            // const SystemStatusBar()
           ],
         ),
       ),
