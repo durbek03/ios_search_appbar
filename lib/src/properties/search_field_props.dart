@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class SearchFieldProperties {
   SearchFieldProperties(
-      {TextEditingController? controller,
+      {this.controller,
       this.onChanged,
       this.onSubmitted,
       this.style,
@@ -21,7 +21,7 @@ class SearchFieldProperties {
       this.suffixInsets = const EdgeInsetsDirectional.fromSTEB(0, 0, 5, 2),
       this.suffixIcon = const Icon(CupertinoIcons.xmark_circle_fill),
       this.onSuffixTap,
-      FocusNode? focusNode,
+      this.focusNode,
       this.autofocus = false,
       this.onTap,
       this.autocorrect = true,
@@ -30,19 +30,21 @@ class SearchFieldProperties {
       this.paddingLeft = 16,
       this.paddingRight = 16,
       this.cancelButtonName = "Cancel",
-      this.cancelButtonStyle = const TextStyle(color: Colors.blue, fontWeight: FontWeight.w400, fontSize: 17)}) {
-    if (controller != null) {
-      SearchFieldProperties.controller = controller;
-    }
-    if (focusNode != null) {
-      SearchFieldProperties.focusNode = focusNode;
-    } else {
-      SearchFieldProperties.focusNode = FocusNode();
-    }
+      this.cancelButtonStyle = const TextStyle(
+          color: Colors.blue, fontWeight: FontWeight.w400, fontSize: 17)}) {}
+
+  final TextEditingController? controller;
+  final TextEditingController _localController = TextEditingController();
+  final FocusNode? focusNode;
+  final FocusNode _localFocusNode = FocusNode();
+
+  TextEditingController getController() {
+    return controller ?? _localController;
   }
 
-  static TextEditingController? controller;
-  static FocusNode? focusNode;
+  FocusNode getFocusNode() {
+    return focusNode ?? _localFocusNode;
+  }
 
   final ValueChanged<String>? onChanged;
   final ValueChanged<String>? onSubmitted;

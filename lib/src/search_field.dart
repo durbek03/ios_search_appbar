@@ -91,19 +91,19 @@ class _SearchFieldState extends State<SearchField> {
                       width: widget.searchCancelOpen ? (cancelButtonWidth == null ? MediaQuery.of(context).size.width * 0.725 : MediaQuery.of(context).size.width - (cancelButtonWidth! + widget.properties.paddingLeft + 2 * widget.properties.paddingRight)) : MediaQuery.of(context).size.width,
                       child: Focus(
                         onFocusChange: (value) {
-                          widget.viewModel.onFocusChange(value, SearchFieldProperties.controller!.text);
-                          widget.viewModel.onSearchFocusChange(value, SearchFieldProperties.controller!.text);
+                          widget.viewModel.onFocusChange(value, widget.properties.getController().text);
+                          widget.viewModel.onSearchFocusChange(value, widget.properties.getController().text);
                         },
                         child: CupertinoSearchTextField(
                           onSuffixTap: () {
-                            SearchFieldProperties.controller!.text = "";
-                            SearchFieldProperties.focusNode!.requestFocus();
+                            widget.properties.getController().text = "";
+                            widget.properties.getFocusNode().requestFocus();
                             widget.properties.onSuffixTap?.call();
                           },
                           suffixIcon: widget.properties.suffixIcon,
-                          focusNode: SearchFieldProperties.focusNode,
+                          focusNode: widget.properties.getFocusNode(),
                           style: widget.properties.style,
-                          controller: SearchFieldProperties.controller,
+                          controller: widget.properties.getController(),
                           onChanged: widget.properties.onChanged,
                           backgroundColor: widget.properties.backgroundColor,
                           onSubmitted: widget.properties.onSubmitted,
@@ -146,8 +146,8 @@ class _SearchFieldState extends State<SearchField> {
                             onTap: () async {
                               widget.properties.onCancelTap?.call();
                               await widget.viewModel.cancelSearch(
-                                  SearchFieldProperties.controller!, widget.scrollController, SearchFieldProperties.focusNode!);
-                              widget.viewModel.changeAppBarCollapseState(false, SearchFieldProperties.controller!.text);
+                                  widget.properties.getController(), widget.scrollController, widget.properties.getFocusNode());
+                              widget.viewModel.changeAppBarCollapseState(false, widget.properties.getController().text);
                               widget.viewModel.changeCancelSearch(false);
                             },
                             child: Text(
