@@ -36,7 +36,9 @@ class CupertinoSearchAppBar extends StatefulWidget {
   final List<Widget> slivers;
 
   /// Scroll controller of [CustomScrollView]
-  late final ScrollController? scrollController;
+  final ScrollController? scrollController;
+
+  final ScrollController _localScrollController = ScrollController(initialScrollOffset: 36);
 
   /// With this field, [CupertinoTextField] which is responsible for search can be customized
   late final SearchFieldProperties searchFieldProperties;
@@ -44,20 +46,19 @@ class CupertinoSearchAppBar extends StatefulWidget {
   /// With this field, [NavigationAppBar] can be customized
   late final AppBarProperties appBarProperties;
 
+  ScrollController getScrollController() {
+    return scrollController ?? _localScrollController;
+  }
+
   @override
-  State<CupertinoSearchAppBar> createState() => _CupertinoSearchAppBarState(scrollController: scrollController);
+  State<CupertinoSearchAppBar> createState() => _CupertinoSearchAppBarState();
 }
 
 class _CupertinoSearchAppBarState extends State<CupertinoSearchAppBar> {
   /// [ViewModel] holds all necessary fields for driving core functionalities of this package (appBarCollapse, searchTextField animation...)
   late final ViewModel _viewModel = ViewModel();
   String? listHashCodeBefore;
-  late final ScrollController scrollController;
   double remainingScreenHeight = 0;
-
-  _CupertinoSearchAppBarState({ScrollController? scrollController}) {
-    this.scrollController = scrollController ?? ScrollController(initialScrollOffset: kSearchHeight);
-  }
 
   /// prioritized slivers will be inserted from the first index of the list
   /// you will not see any difference "UI"wise but the order of slivers will be changed in widget tree
@@ -70,8 +71,10 @@ class _CupertinoSearchAppBarState extends State<CupertinoSearchAppBar> {
 
   @override
   void dispose() {
+    widget._localScrollController.dispose();
+    widget.searchFieldProperties.dispose();
     super.dispose();
-    scrollController.dispose();
+    widget.getScrollController().dispose();
   }
 
 
@@ -80,13 +83,13 @@ class _CupertinoSearchAppBarState extends State<CupertinoSearchAppBar> {
     prioritizedSlivers.clear();
     defaultSlivers.clear();
     widget.slivers.forEach((element) {
-      if (element is Prioritize) {
+      if (element is Prior) {
         prioritizedSlivers.add(element);
       } else {
         defaultSlivers.add(element);
       }
     });
-    _viewModel.offsetChange(scrollController.offset);
+    _viewModel.offsetChange(widget.getScrollController().offset);
     return super.didUpdateWidget(oldWidget);
   }
 
@@ -101,14 +104,14 @@ class _CupertinoSearchAppBarState extends State<CupertinoSearchAppBar> {
       child: NotificationListener(
         onNotification: (notification) {
           if (notification is ScrollNotification) {
-            _viewModel.offsetChange(scrollController.offset);
+            _viewModel.offsetChange(widget.getScrollController().offset);
             if (notification is ScrollStartNotification) {
               _viewModel.isScrolling.value = true;
             }
             if (notification is ScrollEndNotification) {
               _viewModel.isScrolling.value = false;
             }
-            _viewModel.calculateSearch(scrollController.offset, scrollController.position.userScrollDirection);
+            _viewModel.calculateSearch(widget.getScrollController().offset, widget.getScrollController().position.userScrollDirection);
           }
           return false;
         },
@@ -116,7 +119,7 @@ class _CupertinoSearchAppBarState extends State<CupertinoSearchAppBar> {
           children: [
             CustomScrollView(
               physics: const AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
-              controller: scrollController,
+              controller: widget.getScrollController(),
               slivers: [
                 ...prioritizedSlivers,
                 ValueListenableBuilder(
@@ -155,7 +158,7 @@ class _CupertinoSearchAppBarState extends State<CupertinoSearchAppBar> {
                             valueListenable: _viewModel.appBarCollapsed,
                             builder: (context, isCollapsed, child) {
                               return SearchField(
-                                scrollController: scrollController,
+                                scrollController: widget.getScrollController(),
                                 appBarCollapsed: isCollapsed,
                                 viewModel: _viewModel,
                                 properties: widget.searchFieldProperties,

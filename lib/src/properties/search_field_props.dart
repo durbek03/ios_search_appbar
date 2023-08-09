@@ -71,6 +71,11 @@ class SearchFieldProperties {
   final double paddingRight;
   final String cancelButtonName;
   final TextStyle cancelButtonStyle;
-
   final bool? enabled;
+
+  ///do not call this method. this should be called only from within the package
+  dispose() {
+    _localFocusNode.dispose();
+    _localController.dispose();
+  }
 }
