@@ -37,6 +37,12 @@ class Example extends StatelessWidget {
       //to customize app bar, use:
       appBarProperties: AppBarProperties(),
       slivers: [
+        //under the hood this package places other necessary sliver before yours' to correctly animate searchBar
+        //but for such cases as CupertinoSliverRefreshControl, it is safe to insert them at the beginning and to do that
+        //wrap your sliver with Prior widget
+        Prior(
+          child: CupertinoSliverRefreshControl()
+        ),
         SliverList(
           delegate: SliverChildBuilderDelegate(
             (context, index) {
