@@ -7,13 +7,13 @@ import 'package:ios_search_appbar/src/properties/search_field_props.dart';
 import 'package:ios_search_appbar/src/search_field.dart';
 import 'package:ios_search_appbar/src/view_model.dart';
 import 'package:ios_search_appbar/src/widgets/extra_scroll_sliver.dart';
-import 'package:ios_search_appbar/src/widgets/prioritize.dart';
 import 'package:ios_search_appbar/src/widgets/sliver_pinned_header.dart';
 
 class CupertinoSearchAppBar extends StatefulWidget {
   CupertinoSearchAppBar({
     Key? key,
     required this.slivers,
+    this.refreshSliver,
     this.title = "",
 
     /// set initial offset to 36.0 if you want to define scrollController
@@ -46,6 +46,8 @@ class CupertinoSearchAppBar extends StatefulWidget {
   /// With this field, [NavigationAppBar] can be customized
   late final AppBarProperties appBarProperties;
 
+  final Widget? refreshSliver;
+
   ScrollController getScrollController() {
     return scrollController ?? _localScrollController;
   }
@@ -65,9 +67,6 @@ class _CupertinoSearchAppBarState extends State<CupertinoSearchAppBar> {
   /// this package needs to insert [ExtraScrollSliver] before other scrollable slivers to correctly animate searchBar
   /// however sometimes you have to insert you own sliver from the 0 index of sliverList. For example [CupertinoSliverRefreshControl] which adds refresher when list is pulled down
   /// inserting your sliver for such use cases does not break the animation of searchBar
-  List<Widget> prioritizedSlivers = [];
-
-  List<Widget> defaultSlivers = [];
 
   @override
   void dispose() {
@@ -80,15 +79,6 @@ class _CupertinoSearchAppBarState extends State<CupertinoSearchAppBar> {
 
   @override
   void didUpdateWidget(CupertinoSearchAppBar oldWidget) {
-    prioritizedSlivers.clear();
-    defaultSlivers.clear();
-    widget.slivers.forEach((element) {
-      if (element is Prior) {
-        prioritizedSlivers.add(element);
-      } else {
-        defaultSlivers.add(element);
-      }
-    });
     _viewModel.offsetChange(widget.getScrollController().offset);
     return super.didUpdateWidget(oldWidget);
   }
@@ -121,7 +111,7 @@ class _CupertinoSearchAppBarState extends State<CupertinoSearchAppBar> {
               physics: const AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
               controller: widget.getScrollController(),
               slivers: [
-                ...prioritizedSlivers,
+                if (widget.refreshSliver != null) widget.refreshSliver!,
                 ValueListenableBuilder(
                     valueListenable: _viewModel.isScrolling,
                     builder: (BuildContext context, bool isScrolling, Widget? child) {
@@ -171,7 +161,7 @@ class _CupertinoSearchAppBarState extends State<CupertinoSearchAppBar> {
                             },
                           );
                         })),
-                ...defaultSlivers,
+                ...widget.slivers,
                 SliverFillRemaining(
                   hasScrollBody: false,
                   child: Container(),
