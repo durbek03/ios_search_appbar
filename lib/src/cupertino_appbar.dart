@@ -15,7 +15,7 @@ class NavigationAppBar extends StatelessWidget {
       this.borderColor,
       required this.isCollapsed,
       this.trailing,
-      this.leading})
+      this.leading, required this.offsetIsNegative})
       : super(key: key);
 
   final String title;
@@ -27,6 +27,7 @@ class NavigationAppBar extends StatelessWidget {
   final Widget? trailing;
   final Widget? leading;
   final bool isCollapsed;
+  final bool offsetIsNegative;
 
   @override
   Widget build(BuildContext context) {
@@ -94,17 +95,30 @@ class NavigationAppBar extends StatelessWidget {
         filter: ImageFilter.blur(
             sigmaX: blurred ? 10 : 0, sigmaY: blurred ? 10 : 0),
         child: Container(
-          color: Scaffold.of(context).widget.backgroundColor?.withOpacity(blurred ? (!largeTitleVisible ? 0 : 1) : 1),
+          color: _getFilterColor(context),
           child: AnimatedContainer(
             duration: kAppBarCollapseDuration,
-            color: isCollapsed ? backgroundColor : !largeTitleVisible ? (blurred
-                ? (backgroundColor ?? context.kDefaultAppBarColor())
-                    .withOpacity(0.8)
-                : (backgroundColor ?? context.kDefaultAppBarColor())) : Scaffold.of(context).widget.backgroundColor,
+            color: _getAppBarColor(context),
             child: child,
           ),
         ),
       ),
     );
+  }
+
+  Color? _getFilterColor(BuildContext context) {
+    final backgroundColor = Scaffold.of(context).widget.backgroundColor;
+    if (blurred) {
+      return backgroundColor?.withOpacity(!largeTitleVisible ? 0 : 1);
+    } else {
+      return backgroundColor?.withOpacity(offsetIsNegative ? 0 : 1);
+      }
+  }
+  
+  Color? _getAppBarColor(BuildContext context) {
+    return isCollapsed ? backgroundColor : !largeTitleVisible ? (blurred
+        ? (backgroundColor ?? context.kDefaultAppBarColor())
+        .withOpacity(0.8)
+        : (backgroundColor ?? context.kDefaultAppBarColor())) : Scaffold.of(context).widget.backgroundColor?.withOpacity(offsetIsNegative ? 0 : 1);
   }
 }

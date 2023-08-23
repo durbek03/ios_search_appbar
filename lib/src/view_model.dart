@@ -25,6 +25,9 @@ class ViewModel {
   ///true if CustomScrollView is being scrolled else false
   final ValueNotifier<bool> isScrolling = ValueNotifier(false);
 
+  ///true if scroll offset is negative else false
+  final ValueNotifier<bool> offsetIsNegative = ValueNotifier(false);
+
   ///Calculation of searchBars animation
   calculateSearch(double offset, ScrollDirection direction) {
     if (appBarCollapsed.value) return;
@@ -69,6 +72,7 @@ class ViewModel {
   }
 
   void offsetChange(double offset) {
+    _changeOffsetIsNegative(offset);
     _changeLargeTitle(offset);
   }
 
@@ -77,6 +81,19 @@ class ViewModel {
       largeTitleVisible.value = false;
     } else {
       largeTitleVisible.value = true;
+    }
+  }
+
+  void _changeOffsetIsNegative(double offset) {
+    if (offset < 0 && !offsetIsNegative.value) {
+      offsetIsNegative.value = true;
+      return;
+    }
+    if (offsetIsNegative.value) {
+      if (offset >=0) {
+        offsetIsNegative.value = false;
+        return;
+      }
     }
   }
 

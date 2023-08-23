@@ -72,14 +72,16 @@ class _CupertinoSearchAppBarState extends State<CupertinoSearchAppBar> {
   void dispose() {
     widget._localScrollController.dispose();
     widget.searchFieldProperties.dispose();
-    super.dispose();
     widget.getScrollController().dispose();
+    super.dispose();
   }
 
 
   @override
   void didUpdateWidget(CupertinoSearchAppBar oldWidget) {
+    if (widget.getScrollController().hasClients) {
     _viewModel.offsetChange(widget.getScrollController().offset);
+    }
     return super.didUpdateWidget(oldWidget);
   }
 
@@ -173,26 +175,28 @@ class _CupertinoSearchAppBarState extends State<CupertinoSearchAppBar> {
                 ),
               ],
             ),
-            Positioned(
-              top: 0,
-              child: ValueListenableBuilder(
-                  valueListenable: _viewModel.largeTitleVisible,
-                  builder: (context, largeTitleVisible, child) {
-                    return ValueListenableBuilder(
-                      valueListenable: _viewModel.appBarCollapsed,
-                      builder: (context, isCollapsed, child) {
-                        return NavigationAppBar(
-                          borderColor: widget.appBarProperties.borderColor,
-                          backgroundColor: widget.appBarProperties.backgroundColor,
-                          blurred: !widget.appBarProperties.blurredBackground ? false : !largeTitleVisible,
-                          largeTitleVisible: largeTitleVisible,
-                          title: widget.title,
-                          titleStyle: widget.appBarProperties.titleStyle,
-                          isCollapsed: isCollapsed,
-                        );
-                      },
-                    );
-                  }),
+            ValueListenableBuilder(
+                valueListenable: _viewModel.offsetIsNegative,
+                builder: (context, offsetIsNegative, child) {
+                 return ValueListenableBuilder(
+                    valueListenable: _viewModel.largeTitleVisible,
+                    builder: (context, largeTitleVisible, child) {
+                      return ValueListenableBuilder(
+                        valueListenable: _viewModel.appBarCollapsed,
+                        builder: (context, isCollapsed, child) {
+                          return NavigationAppBar(
+                            borderColor: widget.appBarProperties.borderColor,
+                            backgroundColor: widget.appBarProperties.backgroundColor,
+                            blurred: !widget.appBarProperties.blurredBackground ? false : !largeTitleVisible,
+                            largeTitleVisible: largeTitleVisible,
+                            title: widget.title,
+                            titleStyle: widget.appBarProperties.titleStyle,
+                            isCollapsed: isCollapsed, offsetIsNegative: offsetIsNegative,
+                          );
+                        },
+                      );
+                    });
+              }
             ),
 
             /// making SystemStatusBar transparent
