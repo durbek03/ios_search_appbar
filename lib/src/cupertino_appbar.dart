@@ -15,7 +15,8 @@ class NavigationAppBar extends StatelessWidget {
       this.borderColor,
       required this.isCollapsed,
       this.trailing,
-      this.leading, required this.offsetIsNegative})
+      this.leading,
+      required this.offsetIsNegative})
       : super(key: key);
 
   final String title;
@@ -35,15 +36,20 @@ class NavigationAppBar extends StatelessWidget {
       child: AnimatedContainer(
         duration: kAppBarCollapseDuration,
         width: MediaQuery.of(context).size.width,
-        height: isCollapsed ? 0 : kMinInteractiveDimensionCupertino +
-            MediaQuery.of(context).padding.top,
+        height: isCollapsed
+            ? 0
+            : kMinInteractiveDimensionCupertino +
+                MediaQuery.of(context).padding.top,
         decoration: BoxDecoration(
-          border: largeTitleVisible ? invisibleBorder : Border(
-            bottom: BorderSide(
-              color: borderColor ?? const Color.fromRGBO(60, 60, 67, 0.29),
-              width: 0.33,
-            ),
-          ),
+          border: largeTitleVisible
+              ? invisibleBorder
+              : Border(
+                  bottom: BorderSide(
+                    color:
+                        borderColor ?? const Color.fromRGBO(60, 60, 67, 0.29),
+                    width: 0.33,
+                  ),
+                ),
         ),
         child: SafeArea(
           bottom: false,
@@ -112,13 +118,20 @@ class NavigationAppBar extends StatelessWidget {
       return backgroundColor?.withOpacity(!largeTitleVisible ? 0 : 1);
     } else {
       return backgroundColor?.withOpacity(offsetIsNegative ? 0 : 1);
-      }
+    }
   }
-  
+
   Color? _getAppBarColor(BuildContext context) {
-    return isCollapsed ? backgroundColor : !largeTitleVisible ? (blurred
-        ? (backgroundColor ?? context.kDefaultAppBarColor())
-        .withOpacity(0.8)
-        : (backgroundColor ?? context.kDefaultAppBarColor())) : Scaffold.of(context).widget.backgroundColor?.withOpacity(offsetIsNegative ? 0 : 1);
+    return isCollapsed
+        ? backgroundColor
+        : !largeTitleVisible
+            ? (blurred
+                ? (backgroundColor ?? context.kDefaultAppBarColor())
+                    .withOpacity(0.8)
+                : (backgroundColor ?? context.kDefaultAppBarColor()))
+            : Scaffold.of(context)
+                .widget
+                .backgroundColor
+                ?.withOpacity(offsetIsNegative ? 0 : 1);
   }
 }
