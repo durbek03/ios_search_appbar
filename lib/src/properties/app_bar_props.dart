@@ -6,6 +6,8 @@ class AppBarProperties {
     this.backgroundColor,
     this.blurredBackground = true,
     this.borderColor,
+    this.leading,
+    this.trailing,
   }) {
     this.titleStyle = titleStyle ?? const TextStyle();
   }
@@ -14,4 +16,6 @@ class AppBarProperties {
   final Color? backgroundColor;
   late final Color? borderColor;
   final bool blurredBackground;
+  final Widget? leading;
+  final Widget? trailing;
 }

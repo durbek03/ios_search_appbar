@@ -185,6 +185,8 @@ class _CupertinoSearchAppBarState extends State<CupertinoSearchAppBar> {
                         valueListenable: _viewModel.appBarCollapsed,
                         builder: (context, isCollapsed, child) {
                           return NavigationAppBar(
+                            leading: widget.appBarProperties.leading,
+                            trailing: widget.appBarProperties.trailing,
                             borderColor: widget.appBarProperties.borderColor,
                             backgroundColor: widget.appBarProperties.backgroundColor,
                             blurred: !widget.appBarProperties.blurredBackground ? false : !largeTitleVisible,
