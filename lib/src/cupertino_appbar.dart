@@ -64,21 +64,19 @@ class NavigationAppBar extends StatelessWidget {
                 ),
               ],
               Expanded(
-                child: Container(
-                  child: AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 100),
-                    child: !largeTitleVisible
-                        ? Text(
-                            title,
-                            key: const Key("key_title_shown"),
-                            style: titleStyle.copyWith(
-                                fontSize: 17, fontWeight: FontWeight.w600),
-                          )
-                        : const Text(
-                            "",
-                            key: Key("key_title_hidden"),
-                          ),
-                  ),
+                child: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 100),
+                  child: !largeTitleVisible
+                      ? Text(
+                          title,
+                          key: const Key("key_title_shown"),
+                          style: titleStyle.copyWith(
+                              fontSize: 17, fontWeight: FontWeight.w600),
+                        )
+                      : const Text(
+                          "",
+                          key: Key("key_title_hidden"),
+                        ),
                 ),
               ),
               if (trailing != null)
