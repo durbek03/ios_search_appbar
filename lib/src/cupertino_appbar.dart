@@ -129,9 +129,6 @@ class NavigationAppBar extends StatelessWidget {
                 ? (backgroundColor ?? context.kDefaultAppBarColor())
                     .withOpacity(0.8)
                 : (backgroundColor ?? context.kDefaultAppBarColor()))
-            : Scaffold.of(context)
-                .widget
-                .backgroundColor
-                ?.withOpacity(offsetIsNegative ? 0 : 1);
+            : (Theme.of(context)).scaffoldBackgroundColor.withOpacity(offsetIsNegative ? 0 : 1);
   }
 }

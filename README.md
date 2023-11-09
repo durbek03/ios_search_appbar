@@ -9,7 +9,7 @@ Add the `ios_search_appbar` package to your `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  ios_search_appbar: ^1.0.7
+  ios_search_appbar: ^1.0.8
 
 ```
 Import the package in your Dart code:
@@ -36,13 +36,27 @@ class Example extends StatelessWidget {
       searchFieldProperties: SearchFieldProperties(),
       //to customize app bar, use:
       appBarProperties: AppBarProperties(),
+      //if you want to add refresh then add like this
+      refreshSliver: CupertinoSliverRefreshControl(
+        onRefresh: () async {
+        },
+        builder: (context, refreshState, pulledExtent,
+            refreshTriggerPullDistance, refreshIndicatorExtent) {
+          // return Container(color: Colors.red, width: 500, height: 200,);
+          return buildRefreshIndicator(
+              context,
+              refreshState,
+              pulledExtent,
+              refreshTriggerPullDistance,
+              refreshIndicatorExtent,
+              true);
+        },
+        refreshIndicatorExtent: 40,
+      ),
       slivers: [
         //under the hood this package places other necessary sliver before yours' to correctly animate searchBar
         //but for such cases as CupertinoSliverRefreshControl, it is safe to insert them at the beginning and to do that
         //wrap your sliver with Prior widget
-        Prior(
-          child: CupertinoSliverRefreshControl()
-        ),
         SliverList(
           delegate: SliverChildBuilderDelegate(
             (context, index) {
