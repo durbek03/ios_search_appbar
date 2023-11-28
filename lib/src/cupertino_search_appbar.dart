@@ -184,16 +184,21 @@ class _CupertinoSearchAppBarState extends State<CupertinoSearchAppBar> {
                       return ValueListenableBuilder(
                         valueListenable: _viewModel.appBarCollapsed,
                         builder: (context, isCollapsed, child) {
-                          return NavigationAppBar(
-                            leading: widget.appBarProperties.leading,
-                            trailing: widget.appBarProperties.trailing,
-                            borderColor: widget.appBarProperties.borderColor,
-                            backgroundColor: widget.appBarProperties.backgroundColor,
-                            blurred: !widget.appBarProperties.blurredBackground ? false : !largeTitleVisible,
-                            largeTitleVisible: largeTitleVisible,
-                            title: widget.title,
-                            titleStyle: widget.appBarProperties.titleStyle,
-                            isCollapsed: isCollapsed, offsetIsNegativeOrZero: offsetIsNegativeOrZero,
+                          return ValueListenableBuilder(
+                              valueListenable: _viewModel.largeTitleIsHalfVisible,
+                              builder: (context, largeTitleHalfVisible, child) {
+                              return NavigationAppBar(
+                                leading: widget.appBarProperties.leading,
+                                trailing: widget.appBarProperties.trailing,
+                                borderColor: widget.appBarProperties.borderColor,
+                                backgroundColor: widget.appBarProperties.backgroundColor,
+                                blurred: !widget.appBarProperties.blurredBackground ? false : !largeTitleVisible,
+                                largeTitleVisible: largeTitleVisible,
+                                title: widget.title,
+                                titleStyle: widget.appBarProperties.titleStyle,
+                                isCollapsed: isCollapsed, offsetIsNegativeOrZero: offsetIsNegativeOrZero, largeTitleHalfVisible: largeTitleHalfVisible,
+                              );
+                            }
                           );
                         },
                       );

@@ -9,6 +9,8 @@ class ViewModel {
   ///if large title of appBar is beyond [largeTitleThreshold] then it is false else true
   final ValueNotifier<bool> largeTitleVisible = ValueNotifier(true);
 
+  final ValueNotifier<bool> largeTitleIsHalfVisible = ValueNotifier(false);
+
   ///height of searchBar
   final ValueNotifier<double> searchHeight = ValueNotifier(0);
 
@@ -79,8 +81,12 @@ class ViewModel {
   void _changeLargeTitle(double offset) {
     if (offset > largeTitleThreshold) {
       largeTitleVisible.value = false;
-    } else {
+      largeTitleIsHalfVisible.value = false;
+    } else if (offset  <= largeTitleThreshold) {
       largeTitleVisible.value = true;
+      largeTitleIsHalfVisible.value = false;
+    } else {
+      largeTitleIsHalfVisible.value = true;
     }
   }
 

@@ -16,7 +16,7 @@ class NavigationAppBar extends StatelessWidget {
       required this.isCollapsed,
       this.trailing,
       this.leading,
-      required this.offsetIsNegativeOrZero})
+      required this.offsetIsNegativeOrZero, required this.largeTitleHalfVisible})
       : super(key: key);
 
   final String title;
@@ -29,6 +29,7 @@ class NavigationAppBar extends StatelessWidget {
   final Widget? leading;
   final bool isCollapsed;
   final bool offsetIsNegativeOrZero;
+  final bool largeTitleHalfVisible;
 
   @override
   Widget build(BuildContext context) {
@@ -110,23 +111,21 @@ class NavigationAppBar extends StatelessWidget {
     );
   }
 
-  Color? _getFilterColor(BuildContext context) {
-    final backgroundColor = Scaffold.of(context).widget.backgroundColor;
+  Color _getFilterColor(BuildContext context) {
+    if (isCollapsed) {
+      return this.backgroundColor ?? context.kDefaultAppBarColor();
+    }
+    final backgroundColor = Scaffold.of(context).widget.backgroundColor ?? Theme.of(context).scaffoldBackgroundColor;
     if (blurred) {
-      return backgroundColor?.withOpacity(!largeTitleVisible ? 0 : 1);
+      return backgroundColor.withOpacity(!largeTitleVisible ? 0 : 1);
     } else {
-      return backgroundColor?.withOpacity(offsetIsNegativeOrZero ? 0 : 1);
+      return backgroundColor.withOpacity(offsetIsNegativeOrZero ? 0 : 1);
     }
   }
 
   Color? _getAppBarColor(BuildContext context) {
-    return isCollapsed
-        ? backgroundColor
-        : !largeTitleVisible
-            ? (blurred
-                ? (backgroundColor ?? context.kDefaultAppBarColor())
-                    .withOpacity(0.8)
-                : (backgroundColor ?? context.kDefaultAppBarColor()))
-            : Colors.transparent;
+    return !largeTitleVisible
+        ? (backgroundColor ?? context.kDefaultAppBarColor()).withOpacity(blurred ? 0.8 : 1)
+        : ((Scaffold.of(context).widget.backgroundColor ?? Theme.of(context).scaffoldBackgroundColor).withOpacity(offsetIsNegativeOrZero ? 0 : 1));
   }
 }
