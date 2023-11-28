@@ -16,7 +16,7 @@ class NavigationAppBar extends StatelessWidget {
       required this.isCollapsed,
       this.trailing,
       this.leading,
-      required this.offsetIsNegative})
+      required this.offsetIsNegativeOrZero})
       : super(key: key);
 
   final String title;
@@ -28,7 +28,7 @@ class NavigationAppBar extends StatelessWidget {
   final Widget? trailing;
   final Widget? leading;
   final bool isCollapsed;
-  final bool offsetIsNegative;
+  final bool offsetIsNegativeOrZero;
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +55,7 @@ class NavigationAppBar extends StatelessWidget {
           bottom: false,
           child: Row(
             children: [
+              if (leading == null) const Spacer(),
               if (leading != null) ...[
                 Expanded(
                   child: Align(
@@ -63,22 +64,21 @@ class NavigationAppBar extends StatelessWidget {
                   ),
                 ),
               ],
-              Expanded(
-                child: AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 100),
-                  child: !largeTitleVisible
-                      ? Text(
-                          title,
-                          key: const Key("key_title_shown"),
-                          style: titleStyle.copyWith(
-                              fontSize: 17, fontWeight: FontWeight.w600),
-                        )
-                      : const Text(
-                          "",
-                          key: Key("key_title_hidden"),
-                        ),
-                ),
+              AnimatedSwitcher(
+                duration: const Duration(milliseconds: 100),
+                child: !largeTitleVisible
+                    ? Text(
+                        title,
+                        key: const Key("key_title_shown"),
+                        style: titleStyle.copyWith(
+                            fontSize: 17, fontWeight: FontWeight.w600),
+                      )
+                    : const Text(
+                        "",
+                        key: Key("key_title_hidden"),
+                      ),
               ),
+              if (trailing == null) const Spacer(),
               if (trailing != null)
                 Expanded(
                     child: Align(
@@ -115,7 +115,7 @@ class NavigationAppBar extends StatelessWidget {
     if (blurred) {
       return backgroundColor?.withOpacity(!largeTitleVisible ? 0 : 1);
     } else {
-      return backgroundColor?.withOpacity(offsetIsNegative ? 0 : 1);
+      return backgroundColor?.withOpacity(offsetIsNegativeOrZero ? 0 : 1);
     }
   }
 
@@ -127,6 +127,6 @@ class NavigationAppBar extends StatelessWidget {
                 ? (backgroundColor ?? context.kDefaultAppBarColor())
                     .withOpacity(0.8)
                 : (backgroundColor ?? context.kDefaultAppBarColor()))
-            : (Theme.of(context)).scaffoldBackgroundColor.withOpacity(offsetIsNegative ? 0 : 1);
+            : Colors.transparent;
   }
 }

@@ -26,7 +26,7 @@ class ViewModel {
   final ValueNotifier<bool> isScrolling = ValueNotifier(false);
 
   ///true if scroll offset is negative else false
-  final ValueNotifier<bool> offsetIsNegative = ValueNotifier(false);
+  final ValueNotifier<bool> offsetIsNegativeOrZero = ValueNotifier(false);
 
   ///Calculation of searchBars animation
   calculateSearch(double offset, ScrollDirection direction) {
@@ -72,7 +72,7 @@ class ViewModel {
   }
 
   void offsetChange(double offset) {
-    _changeOffsetIsNegative(offset);
+    changeOffsetIsNegativeOrZero(offset);
     _changeLargeTitle(offset);
   }
 
@@ -84,14 +84,14 @@ class ViewModel {
     }
   }
 
-  void _changeOffsetIsNegative(double offset) {
-    if (offset < 0 && !offsetIsNegative.value) {
-      offsetIsNegative.value = true;
+  void changeOffsetIsNegativeOrZero(double offset) {
+    if (offset <= 0 && !offsetIsNegativeOrZero.value) {
+      offsetIsNegativeOrZero.value = true;
       return;
     }
-    if (offsetIsNegative.value) {
-      if (offset >=0) {
-        offsetIsNegative.value = false;
+    if (offsetIsNegativeOrZero.value) {
+      if (offset > 0) {
+        offsetIsNegativeOrZero.value = false;
         return;
       }
     }

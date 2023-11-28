@@ -176,8 +176,8 @@ class _CupertinoSearchAppBarState extends State<CupertinoSearchAppBar> {
               ],
             ),
             ValueListenableBuilder(
-                valueListenable: _viewModel.offsetIsNegative,
-                builder: (context, offsetIsNegative, child) {
+                valueListenable: _viewModel.offsetIsNegativeOrZero,
+                builder: (context, offsetIsNegativeOrZero, child) {
                  return ValueListenableBuilder(
                     valueListenable: _viewModel.largeTitleVisible,
                     builder: (context, largeTitleVisible, child) {
@@ -193,7 +193,7 @@ class _CupertinoSearchAppBarState extends State<CupertinoSearchAppBar> {
                             largeTitleVisible: largeTitleVisible,
                             title: widget.title,
                             titleStyle: widget.appBarProperties.titleStyle,
-                            isCollapsed: isCollapsed, offsetIsNegative: offsetIsNegative,
+                            isCollapsed: isCollapsed, offsetIsNegativeOrZero: offsetIsNegativeOrZero,
                           );
                         },
                       );
