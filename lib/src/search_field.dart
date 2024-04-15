@@ -90,7 +90,7 @@ class _SearchFieldState extends State<SearchField> {
                           duration: kAppBarCollapseDuration,
                           /// MediaQuery.of(context).size.width * 0.725 is approximate width of searchField if the word of "Cancel" button is Cancel;
                           /// if for some reason cancelButtonWidth is not calculated correctly I will use MediaQuery.of(context).size.width * 0.725 as default width
-                          width: widget.searchCancelOpen ? (cancelButtonWidth == null ? (constraints.maxWidth) * 0.725 : MediaQuery.of(context).size.width - (cancelButtonWidth! + widget.properties.paddingLeft + 2 * widget.properties.paddingRight)) : MediaQuery.of(context).size.width,
+                          width: widget.searchCancelOpen ? (cancelButtonWidth == null ? (constraints.maxWidth) * 0.725 : constraints.maxWidth - (cancelButtonWidth! + widget.properties.paddingLeft + 2 * widget.properties.paddingRight)) : MediaQuery.of(context).size.width,
                           child: Focus(
                             onFocusChange: (value) {
                               widget.viewModel.onFocusChange(value, widget.properties.getController().text);

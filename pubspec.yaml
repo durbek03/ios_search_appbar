@@ -1,6 +1,6 @@
 name: ios_search_appbar
 description: iOS-style collapsible app bar with beautifully animated search bar
-version: 1.1.0
+version: 1.1.1
 homepage: https://github.com/durbek03/ios_search_appbar
 
 environment:
