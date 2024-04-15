@@ -99,13 +99,10 @@ class NavigationAppBar extends StatelessWidget {
       child: BackdropFilter(
         filter: ImageFilter.blur(
             sigmaX: blurred ? 10 : 0, sigmaY: blurred ? 10 : 0),
-        child: Container(
-          color: _getFilterColor(context),
-          child: AnimatedContainer(
-            duration: kAppBarCollapseDuration,
-            color: _getAppBarColor(context),
-            child: child,
-          ),
+        child: AnimatedContainer(
+          duration: kAppBarCollapseDuration,
+          color: _getAppBarColor(context),
+          child: child,
         ),
       ),
     );
